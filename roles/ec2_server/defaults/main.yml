@@ -1,0 +1,8 @@
+---
+keypair: "nibiru_admin_key"
+security_group: "sg-be15dbd1"
+instance_type: "m1.small"
+image: "ami-a36037ca"
+number: "1"
+region: "us-east-1"
+zone: "us-east-1a"

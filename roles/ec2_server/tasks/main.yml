@@ -1,0 +1,12 @@
+- name: Provision App Servers
+  ec2:  keypair={{ keypair }}
+        group={{ security_group }}
+        instance_type={{ instance_type }}
+        aws_access_key={{ ec2_access_key }}
+        aws_secret_key={{ ec2_secret_key }}
+        image={{ image }}
+        wait=true
+        count={{ number }}
+        region={{ region }}
+        instance_tags='{"ansible":"true"}'
+  register: ec2
