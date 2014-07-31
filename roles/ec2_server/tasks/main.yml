@@ -1,12 +1,29 @@
 - name: Provision App Servers
-  ec2:  keypair={{ keypair }}
-        group={{ security_group }}
+  ec2:  key_name={{ keypair }}
+        group_id={{ security_group }}
         instance_type={{ instance_type }}
         aws_access_key={{ ec2_access_key }}
         aws_secret_key={{ ec2_secret_key }}
         image={{ image }}
-        wait=true
+        wait=yes
         count={{ number }}
         region={{ region }}
+        vpc_subnet_id={{ subnet_id }}
         instance_tags='{"ansible":"true"}'
   register: ec2
+
+- name: Add all instance private IPs to host group
+  add_host: hostname={{ item.private_ip }} groupname=ec2hosts
+  with_items: ec2.instances
+ 
+
+- debug: var=ec2
+- debug: var=item
+  with_items: ec2.instance_ids
+
+- name: Wait for instances to listen on port:22
+  wait_for: 
+    state=started
+    host={{ item.private_ip }}
+    port=22
+  with_items: ec2.instances    

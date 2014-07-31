@@ -5,3 +5,12 @@
     - vars.yml
   roles: 
     - ec2_server
+
+
+- hosts: ec2hosts
+  user: ubuntu
+  sudo: True
+  gather_facts: true
+  roles: 
+    - common
+
